@@ -493,6 +493,15 @@ int json_vprintf(struct json_out *out, const char *fmt, va_list xap) {
         va_copy(sub_ap, ap);
         vsnprintf(buf, sizeof(buf), fmt2, sub_ap);
 
+        if(fmt[n] == 'f') {
+            if(strcmp(buf, "inf") == 0)
+                snprintf(buf, sizeof(buf), "\"inf\"");
+            else if(strcmp(buf, "-inf") == 0)
+                snprintf(buf, sizeof(buf), "\"-inf\"");
+            else if(strcmp(buf, "nan") == 0)
+                snprintf(buf, sizeof(buf), "\"nan\"");
+        }
+
         /*
          * however we need to parse the type ourselves in order to advance
          * the va_list by the correct amount; there is no portable way to
